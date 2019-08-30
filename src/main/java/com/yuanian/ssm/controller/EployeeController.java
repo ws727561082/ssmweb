@@ -61,7 +61,12 @@ public class EployeeController {
         return Msg.success().add("emp", eployee);
     }
 
-
+    /**
+     *
+     * @param eployee 员工类
+     * @param result
+     * @return
+     */
     @RequestMapping(value="/emp",method=RequestMethod.POST)
     @ResponseBody
     public Msg saveEmp(@Valid Eployee eployee, BindingResult result){
@@ -70,8 +75,8 @@ public class EployeeController {
             Map<String, Object> map = new HashMap<>();
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError fieldError : errors) {
-                System.out.println("错误的字段名："+fieldError.getField());
-                System.out.println("错误信息："+fieldError.getDefaultMessage());
+//                System.out.println("错误的字段名："+fieldError.getField());
+//                System.out.println("错误信息："+fieldError.getDefaultMessage());
                 map.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
             return Msg.fail().add("errorFields", map);
@@ -82,7 +87,11 @@ public class EployeeController {
 
     }
 
-
+    /**
+     *
+     * @param empName:用户名
+     * @return 校验信息
+     */
     @RequestMapping("/checkuser")
     @ResponseBody
     public Msg checkuser(@RequestParam("empName")String empName){
@@ -93,8 +102,8 @@ public class EployeeController {
         }
 
         //数据库用户名重复校验
-        boolean b = eployeeService.checkUser(empName);
-        if(b){
+        boolean flag = eployeeService.checkUser(empName);
+        if(flag){
             return Msg.success();
         }else{
             return Msg.fail().add("va_msg", "用户名不可用");
